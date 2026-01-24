@@ -4,11 +4,18 @@
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     margin: 0;
     padding: 0;
     font-family: "Roboto", sans-serif;
     font-size: 1rem;
     color: black;
+}
+
+main {
+    flex-grow: 1;
 }
 
 header {
@@ -27,11 +34,24 @@ nav {
     margin-top: 20px;
 }
 
+.main-menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
 .main-menu a {
     padding-right: 20px;
     text-decoration: none;
     color: black;
     font-weight: 500;
+    font-size: 20px;
+}
+
+/* "активная" ссылка */
+#active {
+    color: tomato;
 }
 
 .container {
@@ -53,6 +73,7 @@ table {
     border: 1px solid black;
     border-collapse: collapse;
     text-align: center;
+    font-size: 16px;
 }
 
 th, td {
@@ -71,6 +92,45 @@ footer a {
     padding-left: 5px;
     text-decoration: none;
     color: white;
+}
+
+@media all and (max-width: 800px) {
+    #food_about {
+        width: 500px;
+    }
+
+    .main-menu {
+        justify-content: space-between;
+    }
+}
+
+@media all and (max-width: 600px) {
+    h1 {
+        text-align: center;
+    }
+
+    .main-menu {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-menu a {
+        font-size: 24px;
+    }
+
+    #food_about {
+        width: 100%;
+    }
+
+    table {
+        font-size: 14px;
+    }
+}
+
+@media all and (max-width: 400px) {
+    table {
+        font-size: 12px;
+    }
 }
 
 a:hover {

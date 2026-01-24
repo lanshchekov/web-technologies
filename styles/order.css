@@ -1,0 +1,97 @@
+body {
+    background-color: rgb(232, 232, 232);
+}
+
+section>div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+section>h2 {
+    margin: 0 0 40px 0;
+}
+
+section > div > div {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 40px;
+    border-radius: 35px;
+    cursor: pointer;
+    filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+    background-color: white;
+    box-sizing: border-box;
+}
+
+section>div>div:hover {
+    border: 2px solid tomato;
+}
+
+section>div>div:hover button {
+    background-color: rgb(200, 200, 200);
+}
+
+section>div>div>img {
+    width: 100%;
+    border-radius: 35px;
+}
+
+.item-price {
+    font-size: 1.3rem;
+    margin: 20px 0 0 0;
+}
+.item-title {
+    font-size: 1.3rem;
+    margin: 3px 0 20px 0;
+}
+.item-weight {
+    color: grey;
+    margin: 0;
+    font-size: 1.3rem;
+    margin-top: auto;
+}
+
+section>div>div>button {
+    background-color: #f1eee9;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    border: 0;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+@media all and (max-width: 800px) {
+    section>div {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .main-menu {
+        justify-content: space-between;
+    }
+}
+
+@media all and (max-width: 600px) {
+    h1 {
+        text-align: center;
+    }
+
+    .main-menu {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-menu a {
+        font-size: 24px;
+    }
+
+    section>h2 {
+        text-align: center;
+    }
+
+    section>div {
+        grid-template-columns: 1fr;
+    }
+}
