@@ -1,9 +1,11 @@
+import { addDish, getOrderFromStorage } from "./storage.js";
+
 // Ключ доступа к API
-const API_KEY = 'c7f8b838-299b-40ed-8a41-3384fc3c751b';
-const API_URL = 'https://edu.std-900.ist.mospolytech.ru/labs/api/dishes';
+const API_KEY = "c7f8b838-299b-40ed-8a41-3384fc3c751b";
+const API_URL = "https://edu.std-900.ist.mospolytech.ru/labs/api";
 
 // Глобальные переменные
-let dishes = []; // Здесь будут храниться блюда с API
+export var dishes = []; // Здесь будут храниться блюда с API
 const categories = {
     soup: document.querySelector(".soups"),
     'main-course': document.querySelector(".main-courses"), // Изменил на main-course
@@ -20,13 +22,14 @@ const selected = {
     dessert: null
 };
 
-const orderSummary = document.getElementById("order-summary");
-const totalPrice = document.getElementById("total-price");
+// const orderSummary = document.getElementById("order-summary");
+// const totalPrice = document.getElementById("total-price");
 
 // Функция для загрузки блюд с API
 async function loadDishes() {
     try {
-        const response = await fetch("https://edu.std-900.ist.mospolytech.ru/labs/api/dishes");
+        console.log("FETCH URL:", `${API_URL}?api_key=${API_KEY}`);
+        const response = await fetch(`${API_URL}/dishes?api_key=${API_KEY}`);
         
         if (!response.ok) {
             throw new Error(`Ошибка HTTP: ${response.status}`);
@@ -48,7 +51,7 @@ async function loadDishes() {
         // После загрузки отображаем блюда
         renderAllCategories();
         setupFilters();
-        setupFormHandlers();
+        updatePanel();        // ← ВАЖНО
         
     } catch (error) {
         console.error('Ошибка при загрузке блюд:', error);
@@ -78,13 +81,19 @@ function renderCategory(cat) {
         div.setAttribute("data-dish", dish.keyword);
         div.setAttribute("data-kind", dish.kind);
         div.innerHTML = `
-            <img src="${dish.image}" alt="${dish.name}" onerror="this.src='images/default.jpg'">
+            <img src="${dish.image}" alt="${dish.name}"">
             <p class="item-price">${dish.price}₽</p>
             <p class="item-title">${dish.name}</p>
             <p class="item-weight">${dish.count}</p>
             <button type="button">Добавить</button>
         `;
         container.appendChild(div);
+        
+        const stored = getOrderFromStorage();
+        if (stored.includes(dish.keyword)) {
+            div.classList.add("selected");
+        }
+
 
         div.addEventListener("click", () => selectDish(dish));
     });
@@ -93,51 +102,36 @@ function renderCategory(cat) {
 // Выбор блюда
 function selectDish(dish) {
     selected[dish.category] = dish;
-    updateOrder();
+    addDish(dish.keyword, dish.category);
+    updatePanel();
 }
 
-// Обновление сводки заказа
-function updateOrder() {
-    orderSummary.innerHTML = "";
-    const categoriesNames = {
-        soup: "Суп",
-        'main-course': "Главное блюдо",
-        salad: "Салат/стартер",
-        drink: "Напиток",
-        dessert: "Десерт"
-    };
+function updatePanel() {
+    const panel = document.getElementById("checkout-panel");
+    const priceSpan = document.getElementById("panel-price");
+    const link = document.getElementById("checkout-link");
 
-    let total = 0;
-    let nothingSelected = true;
+    const total = Object.values(selected)
+        .filter(Boolean)
+        .reduce((sum, d) => sum + d.price, 0);
 
-    for (let cat in selected) {
-        const dish = selected[cat];
-        const pTitle = document.createElement("p");
-        pTitle.innerHTML = `<strong>${categoriesNames[cat]}</strong>`;
-        const pDish = document.createElement("p");
-
-        if (dish) {
-            pDish.textContent = `${dish.name} ${dish.price}₽`;
-            total += dish.price;
-            nothingSelected = false;
-        } else {
-            if (cat === "soup") pDish.textContent = "Блюдо не выбрано";
-            else if (cat === "main-course") pDish.textContent = "Блюдо не выбрано";
-            else if (cat === "salad") pDish.textContent = "Блюдо не выбрано";
-            else if (cat === "drink") pDish.textContent = "Напиток не выбран";
-            else if (cat === "dessert") pDish.textContent = "Десерт не выбран";
-        }
-
-        orderSummary.appendChild(pTitle);
-        orderSummary.appendChild(pDish);
+    if (total === 0) {
+        panel.classList.add("hidden");
+        return;
     }
 
-    if (nothingSelected) {
-        orderSummary.innerHTML = "<p><strong>Ничего не выбрано</strong></p>";
-        total = 0;
-    }
+    panel.classList.remove("hidden");
+    priceSpan.textContent = `${total} ₽`;
 
-    totalPrice.innerHTML = `<strong>Стоимость заказа: ${total}₽</strong>`;
+    // проверка комбо
+    const validCombo =
+        selected.drink && selected["main-course"] || 
+        selected.drink && selected["main-course"] && selected.soup || 
+        selected.drink && selected.salad && selected.soup || 
+        selected.drink && selected.salad && selected["main-course"] || 
+        selected.drink && selected.salad && selected["main-course"] && selected.soup;
+
+    link.classList.toggle("disabled", !validCombo);
 }
 
 // Настройка фильтров
@@ -166,67 +160,6 @@ function setupFilters() {
                 });
             });
         });
-    });
-}
-
-// Настройка обработчиков формы
-function setupFormHandlers() {
-    const form = document.querySelector("form");
-    
-    // Сброс формы
-    form.addEventListener("reset", () => {
-        for (let cat in selected) selected[cat] = null;
-        updateOrder();
-        
-        // Сброс активных фильтров
-        document.querySelectorAll(".filters button.active").forEach(btn => {
-            btn.classList.remove("active");
-        });
-        document.querySelectorAll("section div[data-kind]").forEach(item => {
-            item.style.display = "";
-        });
-    });
-    
-    // Проверка при отправке
-    form.addEventListener("submit", (e) => {
-        const hasSoup = !!selected.soup;
-        const hasMain = !!selected['main-course'];
-        const hasSalad = !!selected.salad;
-        const hasDrink = !!selected.drink;
-
-        const totalSelected = hasSoup || hasMain || hasSalad || hasDrink || selected.dessert;
-
-        if (!totalSelected) {
-            e.preventDefault();
-            showNotification("Ничего не выбрано. Выберите блюда для заказа");
-            return;
-        }
-
-        if (!hasDrink) {
-            e.preventDefault();
-            showNotification("Выберите напиток");
-            return;
-        }
-
-        if (hasSoup && !hasMain && !hasSalad) {
-            e.preventDefault();
-            showNotification("Выберите главное блюдо/салат/стартер");
-            return;
-        }
-
-        if (hasSalad && !hasSoup && !hasMain) {
-            e.preventDefault();
-            showNotification("Выберите суп или главное блюдо");
-            return;
-        }
-
-        if (hasDrink && !hasSoup && !hasMain && !hasSalad) {
-            e.preventDefault();
-            showNotification("Выберите главное блюдо");
-            return;
-        }
-        
-        // Если все проверки пройдены, форма отправится на https://httpbin.org/post
     });
 }
 

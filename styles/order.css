@@ -17,7 +17,8 @@ section>h2 {
 .main-courses > div,
 .salads-starters > div,
 .beverages > div,
-.desserts > div {
+.desserts > div,
+.checkout-items > div {
     display: flex;
     flex-direction: column;
     padding: 30px 40px;
@@ -32,7 +33,8 @@ section>h2 {
 .main-courses > div:hover,
 .salads-starters > div:hover,
 .beverages > div:hover,
-.desserts > div:hover {
+.desserts > div:hover,
+.checkout-items > div:hover {
     border: 2px solid tomato;
 }
 
@@ -40,7 +42,8 @@ section>h2 {
 .main-courses > div:hover button,
 .salads-starters > div:hover button,
 .beverages > div:hover button,
-.desserts > div:hover button {
+.desserts > div:hover button,
+.checkout-items > div:hover button {
     background-color: rgb(200, 200, 200);
 }
 
@@ -48,7 +51,8 @@ section>h2 {
 .main-courses > div img,
 .salads-starters > div img,
 .beverages > div img,
-.desserts > div img {
+.desserts > div img,
+.checkout-items > div img {
     width: 100%;
     border-radius: 35px;
 }
@@ -72,7 +76,8 @@ section>h2 {
 .main-courses > div button,
 .salads-starters > div button,
 .beverages > div button,
-.desserts > div button {
+.desserts > div button,
+.checkout-items > div button {
     background-color: #f1eee9;
     width: 100%;
     margin-top: 10px;
@@ -351,4 +356,42 @@ input[type="time"] {
 .notification button:hover {
     background: black;
     color: white;
+}
+.checkout-panel {
+    position: sticky;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5);
+    border-top: 1px solid #ddd;
+    padding: 12px 20px;
+    z-index: 100;
+}
+
+.checkout-panel__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.checkout-btn {
+    background: #ff9800;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.checkout-btn.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.hidden {
+    display: none;
+}
+
+.selected {
+    outline: 3px solid #ff9800;
 }

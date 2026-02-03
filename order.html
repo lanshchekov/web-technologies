@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Основы веб-технологий</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/order.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Food Construct</h1>
+        <nav class="main-menu">
+            <a href="index.html">О нас</a>
+            <a href="make_order.html">Собрать ланч</a>
+            <a id="active" href="#">Оформить заказ</a>
+            <a href="#">Заказы</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+    <section>
+        <h2>Состав заказа</h2>
+        <div id="checkout-items" class="checkout-items"></div>
+    </section>
+
+        <!-- Форма заказа -->
+        <section class="order-form">
+            <h2>Сделать заказ</h2>
+
+            <form action="https://httpbin.org/post" method="post">
+
+                <div class="form-columns">
+
+                    <!-- Блок заказа -->
+                    <div class="order-block">
+                        <h3>Ваш заказ</h3>
+                        <div id="order-summary">
+                                <p id="summary-soup">Суп: не выбран</p>
+                                <p id="summary-main">Главное блюдо: не выбрано</p>
+                                <p id="summary-salad">Салат: не выбран</p>
+                                <p id="summary-drink">Напиток: не выбран</p>
+                                <p id="summary-dessert">Десерт: не выбран</p>
+                                <p id="summary-total"><strong>Итого: 0₽</strong></p>
+
+                        </div>
+                        <label for="comment">Комментарии к заказу</label>
+                        <textarea id="comment" name="comment"></textarea>
+                    </div>
+
+                    <!-- Блок данных клиента -->
+                    <div class="client-block">
+                        <h3>Ваши данные</h3>
+
+                        <label for="name">Имя</label>
+                        <input type="text" id="name" name="full_name" required>
+
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+
+                        <div class="checkbox">
+                            <input type="checkbox" id="subscribe" name="subscribe" checked>
+                            <label for="subscribe">Получать информацию о скидках и акциях</label>
+                        </div>
+
+                        <label for="phone">Номер телефона</label>
+                        <input type="tel" id="phone" name="phone" required>
+
+                        <label for="address">Адрес доставки</label>
+                        <input type="text" id="address" name="delivery_address" required>
+
+                        <p><em>Доставка осуществляется только по Москве</em></p>
+
+                        <p>Время доставки:</p>
+                        <div class="radio">
+                            <input type="radio" id="asap" name="delivery_type" value="now" required>
+                            <label for="asap">Как можно скорее</label>
+                        </div>
+                        <div class="radio">
+                            <input type="radio" id="exact" name="delivery_type" value="by_time" required>
+                            <label for="exact">К указанному времени</label>
+                        </div>
+
+                        <label for="time">Укажите время доставки</label>
+                        <input
+                            type="time"
+                            id="time"
+                            name="delivery_time"
+                            min="07:00"
+                            max="23:00"
+                            step="300"
+                        >
+
+                        <p><em>Доступное время доставки с 7:00 до 23:00</em></p>
+
+                        <div class="buttons">
+                            <button type="reset">Сбросить</button>
+                            <button type="submit">Отправить</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </section>
+
+    </div>
+</main>
+
+<footer id="contacts">
+    <p>Позвонить нам <a href="tel:+70000000000">+7-000-000-00-00</a></p>
+</footer>
+
+
+<script type="module" src="js/order.js"></script>
+</body>
+</html>
