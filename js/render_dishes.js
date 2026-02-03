@@ -124,4 +124,66 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Проверка комбо
+
+function showNotification(text) {
+    const overlay = document.createElement("div");
+    overlay.className = "notification-overlay";
+
+    const box = document.createElement("div");
+    box.className = "notification";
+    box.innerHTML = `
+        <p>${text}</p>
+        <button>Окей 👌</button>
+    `;
+
+    box.querySelector("button").addEventListener("click", () => {
+        overlay.remove();
+    });
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+}
+
+form.addEventListener("submit", (e) => {
+    const hasSoup = !!selected.soup;
+    const hasMain = !!selected.main_course;
+    const hasSalad = !!selected.salads_starters;
+    const hasDrink = !!selected.beverage;
+
+    const totalSelected = hasSoup || hasMain || hasSalad || hasDrink || selected.desserts;
+
+    if (!totalSelected) {
+        e.preventDefault();
+        showNotification("Ничего не выбрано. Выберите блюда для заказа");
+        return;
+    }
+
+    if (!hasDrink) {
+        e.preventDefault();
+        showNotification("Выберите напиток");
+        return;
+    }
+
+    if (hasSoup && !hasMain && !hasSalad) {
+        e.preventDefault();
+        showNotification("Выберите главное блюдо/салат/стартер");
+        return;
+    }
+
+    if (hasSalad && !hasSoup && !hasMain) {
+        e.preventDefault();
+        showNotification("Выберите суп или главное блюдо");
+        return;
+    }
+
+    if (hasDrink && !hasSoup && !hasMain && !hasSalad) {
+        e.preventDefault();
+        showNotification("Выберите главное блюдо");
+        return;
+    }
 });
+
+
+});
+

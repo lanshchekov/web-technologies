@@ -13,7 +13,11 @@ section>h2 {
     margin: 0 0 40px 0;
 }
 
-section > div > div {
+.soups > div,
+.main-courses > div,
+.salads-starters > div,
+.beverages > div,
+.desserts > div {
     display: flex;
     flex-direction: column;
     padding: 30px 40px;
@@ -24,15 +28,27 @@ section > div > div {
     box-sizing: border-box;
 }
 
-section>div>div:hover {
+.soups > div:hover,
+.main-courses > div:hover,
+.salads-starters > div:hover,
+.beverages > div:hover,
+.desserts > div:hover {
     border: 2px solid tomato;
 }
 
-section>div>div:hover button {
+.soups > div:hover button,
+.main-courses > div:hover button,
+.salads-starters > div:hover button,
+.beverages > div:hover button,
+.desserts > div:hover button {
     background-color: rgb(200, 200, 200);
 }
 
-section>div>div>img {
+.soups > div img,
+.main-courses > div img,
+.salads-starters > div img,
+.beverages > div img,
+.desserts > div img {
     width: 100%;
     border-radius: 35px;
 }
@@ -52,7 +68,11 @@ section>div>div>img {
     margin-top: auto;
 }
 
-section>div>div>button {
+.soups > div button,
+.main-courses > div button,
+.salads-starters > div button,
+.beverages > div button,
+.desserts > div button {
     background-color: #f1eee9;
     width: 100%;
     margin-top: 10px;
@@ -247,4 +267,88 @@ input[type="time"] {
 .filters button.active {
     background-color: #c8f0d0;
     border-color: #4caf50;
+}
+
+/* Варианты ланча */
+
+.lunch-combos h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.combos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.combo {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.combo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16px;
+}
+
+.combo-item img {
+    width: 64px;
+    transition: transform 0.3s;
+}
+
+.combo-item img:hover {
+    transform: translateY(-6px) scale(1.1);
+}
+
+.dessert-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dessert-info img {
+    width: 64px;
+    margin-bottom: 6px;
+}
+
+.dessert-info p {
+    font-size: 14px;
+}
+
+/* Уведомление */
+
+.notification-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.notification {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.notification button {
+    margin-top: 20px;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid black;
+    background: white;
+}
+
+.notification button:hover {
+    background: black;
+    color: white;
 }
