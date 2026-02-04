@@ -115,9 +115,11 @@ async function openViewModal(id) {
         <p><strong>Комментарий:</strong> ${o.comment || "-"}</p>
 
         <div class="modal-buttons">
-            <button onclick="(${closeModal.toString()})()">Ок</button>
+            <button id="view-ok">Ок</button>
         </div>
     `);
+
+    document.getElementById("view-ok").onclick = closeModal;
 }
 
 /* Редактирование */
@@ -138,10 +140,13 @@ function openEditModal(order) {
         <textarea id="edit-comment">${order.comment || ""}</textarea>
 
         <div class="modal-buttons">
-            <button onclick="saveEdit(${order.id})">Сохранить</button>
-            <button onclick="(${closeModal.toString()})()">Отмена</button>
+            <button id="edit-save">Сохранить</button>
+            <button id="edit-cancel">Отмена</button>
         </div>
     `);
+
+    document.getElementById("edit-save").onclick = () => saveEdit(order.id);
+    document.getElementById("edit-cancel").onclick = closeModal;
 }
 
 async function saveEdit(id) {
@@ -179,10 +184,14 @@ function openDeleteModal(id) {
         <p>Вы уверены, что хотите удалить заказ?</p>
 
         <div class="modal-buttons">
-            <button onclick="deleteOrder(${id})">Да</button>
-            <button onclick="(${closeModal.toString()})()">Отмена</button>
+            <button id="delete-yes">Да</button>
+            <button id="delete-no">Отмена</button>
         </div>
     `);
+
+    document.getElementById("delete-yes").onclick = () => deleteOrder(id);
+    document.getElementById("delete-no").onclick = closeModal;
+
 }
 
 async function deleteOrder(id) {
