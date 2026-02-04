@@ -148,7 +148,7 @@ document.querySelector("form").addEventListener("submit", async e => {
 
         clearOrder();
         alert("Заказ успешно оформлен!");
-        location.href = "index.html";
+        location.href = "all_orders.html";
 
     } catch (err) {
         alert("Ошибка при оформлении заказа");
